@@ -33,7 +33,6 @@ public class DenseOres {
 
         eventBus.addListener(this::buildCreativeTab);
         eventBus.addListener(this::generateClientData);
-        eventBus.addListener(this::generateServerData);
     }
 
     public void buildCreativeTab(final BuildCreativeModeTabContentsEvent event) {
@@ -42,14 +41,10 @@ public class DenseOres {
 
     public void generateClientData(final GatherDataEvent.Client event) {
         PackOutput output = event.getGenerator().getPackOutput();
+        CompletableFuture<HolderLookup.Provider> lookup = event.getLookupProvider();
 
         event.addProvider(new DenseOresModelProvider(output));
         event.addProvider(new ENLanguageProvider(output));
-    }
-
-    public void generateServerData(final GatherDataEvent.Server event) {
-        PackOutput output = event.getGenerator().getPackOutput();
-        CompletableFuture<HolderLookup.Provider> lookup = event.getLookupProvider();
 
         DenseOresBlockTagsProvider blockTags = new DenseOresBlockTagsProvider(output, lookup);
         event.addProvider(blockTags);
