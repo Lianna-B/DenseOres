@@ -13,13 +13,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.neoforge.common.conditions.IConditionBuilder;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class SmeltingRecipesProvider extends RecipeProvider implements IConditionBuilder {
+@SuppressWarnings("NullableProblems")
+public class SmeltingRecipesProvider extends RecipeProvider {
     private static final ImmutableList<ItemLike> DENSE_COAL_ORES = ImmutableList.of(DenseBlocks.DENSE_COAL_ORE.get(), DenseBlocks.DENSE_DEEPSLATE_COAL_ORE.get());
     private static final ImmutableList<ItemLike> DENSE_IRON_ORES = ImmutableList.of(DenseBlocks.DENSE_IRON_ORE.get(), DenseBlocks.DENSE_DEEPSLATE_IRON_ORE.get());
     private static final ImmutableList<ItemLike> DENSE_COPPER_ORES = ImmutableList.of(DenseBlocks.DENSE_COPPER_ORE.get(), DenseBlocks.DENSE_DEEPSLATE_COPPER_ORE.get());
@@ -29,12 +28,12 @@ public class SmeltingRecipesProvider extends RecipeProvider implements IConditio
     private static final ImmutableList<ItemLike> DENSE_LAPIS_ORES = ImmutableList.of(DenseBlocks.DENSE_LAPIS_ORE.get(), DenseBlocks.DENSE_DEEPSLATE_LAPIS_ORE.get());
     private static final ImmutableList<ItemLike> DENSE_DIAMOND_ORES = ImmutableList.of(DenseBlocks.DENSE_DIAMOND_ORE.get(), DenseBlocks.DENSE_DEEPSLATE_DIAMOND_ORE.get());
 
-    public SmeltingRecipesProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-        super(output, registries);
+    protected SmeltingRecipesProvider(HolderLookup.Provider registries, RecipeOutput output) {
+        super(registries, output);
     }
 
     @Override
-    protected void buildRecipes(@NotNull RecipeOutput output) {
+    protected void buildRecipes() {
         oreSmelting(DENSE_COAL_ORES, RecipeCategory.MISC, Items.COAL, 0.4f, "coal", output);
         oreSmelting(DENSE_IRON_ORES, RecipeCategory.MISC, Items.IRON_INGOT, 2.8f, "iron_ingot", output);
         oreSmelting(DENSE_COPPER_ORES, RecipeCategory.MISC, Items.COPPER_INGOT, 2.8f, "copper_ingot", output);
@@ -55,10 +54,26 @@ public class SmeltingRecipesProvider extends RecipeProvider implements IConditio
     }
 
     private void oreSmelting(List<ItemLike> ingredients, RecipeCategory category, ItemLike result, float experience, String group, RecipeOutput output) {
-        for(ItemLike item : ingredients) SimpleCookingRecipeBuilder.smelting(Ingredient.of(item), category, result, experience, 200).group(group).unlockedBy(getHasName(item), has(item)).save(output, ResourceLocation.fromNamespaceAndPath(DenseOres.MOD_ID, getSmeltingRecipeName(result) + "_" + getItemName(item)));
+        for(ItemLike item : ingredients) SimpleCookingRecipeBuilder.smelting(Ingredient.of(item), category, result, experience, 200).group(group).unlockedBy(getHasName(item), has(item)).save(output, ResourceLocation.fromNamespaceAndPath(DenseOres.MOD_ID, getSmeltingRecipeName(result) + "_" + getItemName(item)).toString());
     }
 
     private void oreBlasting(List<ItemLike> ingredients, RecipeCategory category, ItemLike result, float experience, String group, RecipeOutput output) {
-        for(ItemLike item : ingredients) SimpleCookingRecipeBuilder.blasting(Ingredient.of(item), category, result, experience, 100).group(group).unlockedBy(getHasName(item), has(item)).save(output, ResourceLocation.fromNamespaceAndPath(DenseOres.MOD_ID, getBlastingRecipeName(result) + "_" + getItemName(item)));
+        for(ItemLike item : ingredients) SimpleCookingRecipeBuilder.blasting(Ingredient.of(item), category, result, experience, 100).group(group).unlockedBy(getHasName(item), has(item)).save(output, ResourceLocation.fromNamespaceAndPath(DenseOres.MOD_ID, getBlastingRecipeName(result) + "_" + getItemName(item)).toString());
+    }
+
+    public static class Runner extends RecipeProvider.Runner {
+        public Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
+            super(packOutput, registries);
+        }
+
+        @Override
+        protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
+            return new SmeltingRecipesProvider(registries, output);
+        }
+
+        @Override
+        public String getName() {
+            return "Smelting Recipes";
+        }
     }
 }

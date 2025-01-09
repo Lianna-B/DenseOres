@@ -1,20 +1,17 @@
 package com.newjumper.denseores;
 
 import com.newjumper.denseores.content.DenseBlocks;
-import com.newjumper.denseores.datagen.assets.DenseOresBlockStateProvider;
-import com.newjumper.denseores.datagen.assets.DenseOresItemModelProvider;
+import com.newjumper.denseores.datagen.assets.DenseOresModelProvider;
 import com.newjumper.denseores.datagen.assets.ENLanguageProvider;
 import com.newjumper.denseores.datagen.data.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -35,32 +32,31 @@ public class DenseOres {
         DenseBlocks.ITEMS.register(eventBus);
 
         eventBus.addListener(this::buildCreativeTab);
-        eventBus.addListener(this::generateData);
+        eventBus.addListener(this::generateClientData);
+        eventBus.addListener(this::generateServerData);
     }
 
     public void buildCreativeTab(final BuildCreativeModeTabContentsEvent event) {
         if(event.getTab() == DENSE_ORES.get()) DenseBlocks.BLOCKS.getEntries().forEach(block -> event.accept(block.getDelegate().value()));
     }
 
-    public void generateData(final GatherDataEvent event) {
-        DataGenerator generator = event.getGenerator();
-        PackOutput packOutput = generator.getPackOutput();
-        ExistingFileHelper fileHelper = event.getExistingFileHelper();
-        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+    public void generateClientData(final GatherDataEvent.Client event) {
+        PackOutput output = event.getGenerator().getPackOutput();
 
-        // assets
-        generator.addProvider(event.includeClient(), new DenseOresBlockStateProvider(packOutput, fileHelper));
-        generator.addProvider(event.includeClient(), new DenseOresItemModelProvider(packOutput, fileHelper));
-        generator.addProvider(event.includeClient(), new ENLanguageProvider(packOutput));
+        event.addProvider(new DenseOresModelProvider(output));
+        event.addProvider(new ENLanguageProvider(output));
+    }
 
-        // data
-        DenseOresBlockTagsProvider blockTags = new DenseOresBlockTagsProvider(packOutput, lookupProvider, fileHelper);
-        generator.addProvider(event.includeServer(), blockTags);
-        generator.addProvider(event.includeServer(), new DenseOresItemTagsProvider(packOutput, lookupProvider, blockTags.contentsGetter(), fileHelper));
-        generator.addProvider(event.includeServer(), new DenseOresBiomeTagsProvider(packOutput, lookupProvider, fileHelper));
+    public void generateServerData(final GatherDataEvent.Server event) {
+        PackOutput output = event.getGenerator().getPackOutput();
+        CompletableFuture<HolderLookup.Provider> lookup = event.getLookupProvider();
 
-        generator.addProvider(event.includeServer(), new DenseOresWorldGen(packOutput, lookupProvider));
-        generator.addProvider(event.includeServer(), new DenseOresLootTableProvider(packOutput, lookupProvider));
-        generator.addProvider(event.includeServer(), new SmeltingRecipesProvider(packOutput, lookupProvider));
+        DenseOresBlockTagsProvider blockTags = new DenseOresBlockTagsProvider(output, lookup);
+        event.addProvider(blockTags);
+        event.addProvider(new DenseOresItemTagsProvider(output, lookup, blockTags.contentsGetter()));
+        event.addProvider(new DenseOresBiomeTagsProvider(output, lookup));
+        event.addProvider(new DenseOresWorldGen(output, lookup));
+        event.addProvider(new DenseOresLootTableProvider(output, lookup));
+        event.addProvider(new SmeltingRecipesProvider.Runner(output, lookup));
     }
 }

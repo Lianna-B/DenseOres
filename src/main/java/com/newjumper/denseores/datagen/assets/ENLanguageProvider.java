@@ -14,7 +14,6 @@ public class ENLanguageProvider extends LanguageProvider {
     @Override
     protected void addTranslations() {
         DenseBlocks.BLOCKS.getEntries().forEach(this::addBlock);
-
         add("itemGroup." + DenseOres.MOD_ID, "Dense Ores");
     }
 

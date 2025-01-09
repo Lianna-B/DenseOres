@@ -8,14 +8,13 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
 public class DenseOresBlockTagsProvider extends BlockTagsProvider {
-    public DenseOresBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup, ExistingFileHelper exFileHelper) {
-        super(output, lookup, DenseOres.MOD_ID, exFileHelper);
+    public DenseOresBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
+        super(output, lookup, DenseOres.MOD_ID);
     }
 
     @SuppressWarnings("unchecked")
