@@ -9,6 +9,7 @@ import net.minecraft.world.level.biome.Biomes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
 
 public class DenseOresBiomeTagsProvider extends BiomeTagsProvider {
     public DenseOresBiomeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
@@ -17,6 +18,6 @@ public class DenseOresBiomeTagsProvider extends BiomeTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
-        tag(DenseOresTags.Biomes.IS_MOUNTAIN).add(Biomes.WINDSWEPT_HILLS, Biomes.MEADOW, Biomes.FROZEN_PEAKS, Biomes.JAGGED_PEAKS, Biomes.STONY_PEAKS, Biomes.SNOWY_SLOPES, Biomes.GROVE);
+        tag(DenseOresTags.Biomes.IS_MOUNTAIN).addAll(Stream.of(Biomes.WINDSWEPT_HILLS, Biomes.MEADOW, Biomes.FROZEN_PEAKS, Biomes.JAGGED_PEAKS, Biomes.STONY_PEAKS, Biomes.SNOWY_SLOPES, Biomes.GROVE));
     }
 }
