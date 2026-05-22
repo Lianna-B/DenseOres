@@ -6,7 +6,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -77,6 +76,6 @@ public class DenseConfiguredFeatures {
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> create(String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(DenseOres.MOD_ID, name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, DenseOres.rl(name));
     }
 }

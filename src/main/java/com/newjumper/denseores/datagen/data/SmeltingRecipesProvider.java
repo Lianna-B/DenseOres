@@ -9,8 +9,8 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 
@@ -34,31 +34,21 @@ public class SmeltingRecipesProvider extends RecipeProvider {
 
     @Override
     protected void buildRecipes() {
-        oreSmelting(DENSE_COAL_ORES, RecipeCategory.MISC, Items.COAL, 0.4f, "coal", output);
-        oreSmelting(DENSE_IRON_ORES, RecipeCategory.MISC, Items.IRON_INGOT, 2.8f, "iron_ingot", output);
-        oreSmelting(DENSE_COPPER_ORES, RecipeCategory.MISC, Items.COPPER_INGOT, 2.8f, "copper_ingot", output);
-        oreSmelting(DENSE_GOLD_ORES, RecipeCategory.MISC, Items.GOLD_INGOT, 4f, "gold_ingot", output);
-        oreSmelting(DENSE_REDSTONE_ORES, RecipeCategory.REDSTONE, Items.REDSTONE, 2.8f, "redstone", output);
-        oreSmelting(DENSE_EMERALD_ORES, RecipeCategory.MISC, Items.EMERALD, 4f, "emerald", output);
-        oreSmelting(DENSE_LAPIS_ORES, RecipeCategory.MISC, Items.LAPIS_LAZULI, 0.8f, "lapis_lazuli", output);
-        oreSmelting(DENSE_DIAMOND_ORES, RecipeCategory.MISC, Items.DIAMOND, 4f, "diamond", output);
-
-        oreBlasting(DENSE_COAL_ORES, RecipeCategory.MISC, Items.COAL, 0.4f, "coal", output);
-        oreBlasting(DENSE_IRON_ORES, RecipeCategory.MISC, Items.IRON_INGOT, 2.8f, "iron_ingot", output);
-        oreBlasting(DENSE_COPPER_ORES, RecipeCategory.MISC, Items.COPPER_INGOT, 2.8f, "copper_ingot", output);
-        oreBlasting(DENSE_GOLD_ORES, RecipeCategory.MISC, Items.GOLD_INGOT, 4f, "gold_ingot", output);
-        oreBlasting(DENSE_REDSTONE_ORES, RecipeCategory.REDSTONE, Items.REDSTONE, 2.8f, "redstone", output);
-        oreBlasting(DENSE_EMERALD_ORES, RecipeCategory.MISC, Items.EMERALD, 4f, "emerald", output);
-        oreBlasting(DENSE_LAPIS_ORES, RecipeCategory.MISC, Items.LAPIS_LAZULI, 0.8f, "lapis_lazuli", output);
-        oreBlasting(DENSE_DIAMOND_ORES, RecipeCategory.MISC, Items.DIAMOND, 4f, "diamond", output);
+        smelting(DENSE_COAL_ORES, RecipeCategory.MISC, CookingBookCategory.MISC, Items.COAL, 0.4f, "coal", output);
+        smelting(DENSE_IRON_ORES, RecipeCategory.MISC, CookingBookCategory.MISC, Items.IRON_INGOT, 2.8f, "iron_ingot", output);
+        smelting(DENSE_COPPER_ORES, RecipeCategory.MISC, CookingBookCategory.MISC, Items.COPPER_INGOT, 2.8f, "copper_ingot", output);
+        smelting(DENSE_GOLD_ORES, RecipeCategory.MISC, CookingBookCategory.MISC, Items.GOLD_INGOT, 4f, "gold_ingot", output);
+        smelting(DENSE_REDSTONE_ORES, RecipeCategory.REDSTONE, CookingBookCategory.BLOCKS, Items.REDSTONE, 2.8f, "redstone", output);
+        smelting(DENSE_EMERALD_ORES, RecipeCategory.MISC, CookingBookCategory.MISC, Items.EMERALD, 4f, "emerald", output);
+        smelting(DENSE_LAPIS_ORES, RecipeCategory.MISC, CookingBookCategory.MISC, Items.LAPIS_LAZULI, 0.8f, "lapis_lazuli", output);
+        smelting(DENSE_DIAMOND_ORES, RecipeCategory.MISC, CookingBookCategory.MISC, Items.DIAMOND, 4f, "diamond", output);
     }
 
-    private void oreSmelting(List<ItemLike> ingredients, RecipeCategory category, ItemLike result, float experience, String group, RecipeOutput output) {
-        for(ItemLike item : ingredients) SimpleCookingRecipeBuilder.smelting(Ingredient.of(item), category, result, experience, 200).group(group).unlockedBy(getHasName(item), has(item)).save(output, ResourceLocation.fromNamespaceAndPath(DenseOres.MOD_ID, getSmeltingRecipeName(result) + "_" + getItemName(item)).toString());
-    }
-
-    private void oreBlasting(List<ItemLike> ingredients, RecipeCategory category, ItemLike result, float experience, String group, RecipeOutput output) {
-        for(ItemLike item : ingredients) SimpleCookingRecipeBuilder.blasting(Ingredient.of(item), category, result, experience, 100).group(group).unlockedBy(getHasName(item), has(item)).save(output, ResourceLocation.fromNamespaceAndPath(DenseOres.MOD_ID, getBlastingRecipeName(result) + "_" + getItemName(item)).toString());
+    private void smelting(List<ItemLike> ingredients, RecipeCategory category, CookingBookCategory cookingCategory, ItemLike result, float experience, String group, RecipeOutput output) {
+        for(ItemLike item : ingredients) {
+            SimpleCookingRecipeBuilder.smelting(Ingredient.of(item), category, cookingCategory, result, experience, 200).group(group).unlockedBy(getHasName(item), has(item)).save(output, DenseOres.rl(getSmeltingRecipeName(result) + "_" + getItemName(item)).toString());
+            SimpleCookingRecipeBuilder.blasting(Ingredient.of(item), category, cookingCategory, result, experience, 100).group(group).unlockedBy(getHasName(item), has(item)).save(output, DenseOres.rl(getBlastingRecipeName(result) + "_" + getItemName(item)).toString());
+        }
     }
 
     public static class Runner extends RecipeProvider.Runner {

@@ -8,6 +8,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
@@ -53,5 +54,9 @@ public class DenseOres {
         event.addProvider(new DenseOresWorldGen(output, lookup));
         event.addProvider(new DenseOresLootTableProvider(output, lookup));
         event.addProvider(new SmeltingRecipesProvider.Runner(output, lookup));
+    }
+
+    public static Identifier rl(String path) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, path);
     }
 }

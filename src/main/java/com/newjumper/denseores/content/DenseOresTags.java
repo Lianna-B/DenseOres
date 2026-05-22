@@ -2,7 +2,6 @@ package com.newjumper.denseores.content;
 
 import com.newjumper.denseores.DenseOres;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -17,7 +16,7 @@ public class DenseOresTags {
         public static final TagKey<Block> DENSE_NETHERRACK_ORES = tag("dense_netherrack_ores");
 
         private static TagKey<Block> tag(String name) {
-            return BlockTags.create(ResourceLocation.fromNamespaceAndPath(DenseOres.MOD_ID, name));
+            return BlockTags.create(DenseOres.rl(name));
         }
     }
 
@@ -27,11 +26,11 @@ public class DenseOresTags {
         public static final TagKey<Item> DENSE_NETHERRACK_ORES = tag("dense_netherrack_ores");
 
         private static TagKey<Item> tag(String name) {
-            return ItemTags.create(ResourceLocation.fromNamespaceAndPath(DenseOres.MOD_ID, name));
+            return ItemTags.create(DenseOres.rl(name));
         }
     }
 
     public static class Biomes {
-        public static final TagKey<Biome> IS_MOUNTAIN = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(DenseOres.MOD_ID, "is_mountain"));
+        public static final TagKey<Biome> IS_MOUNTAIN = TagKey.create(Registries.BIOME, DenseOres.rl("is_mountain"));
     }
 }
