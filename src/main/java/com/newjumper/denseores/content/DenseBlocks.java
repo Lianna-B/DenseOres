@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 public class DenseBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(DenseOres.MOD_ID);
@@ -26,8 +26,8 @@ public class DenseBlocks {
     public static final DeferredBlock<Block> DENSE_DEEPSLATE_COPPER_ORE = oreBlock("dense_deepslate_copper_ore", Blocks.DEEPSLATE_COPPER_ORE, ConstantInt.of(0));
     public static final DeferredBlock<Block> DENSE_GOLD_ORE = oreBlock("dense_gold_ore", Blocks.GOLD_ORE, ConstantInt.of(0));
     public static final DeferredBlock<Block> DENSE_DEEPSLATE_GOLD_ORE = oreBlock("dense_deepslate_gold_ore", Blocks.DEEPSLATE_GOLD_ORE, ConstantInt.of(0));
-    public static final DeferredBlock<Block> DENSE_REDSTONE_ORE = register("dense_redstone_ore", () -> new RedStoneOreBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.REDSTONE_ORE)));
-    public static final DeferredBlock<Block> DENSE_DEEPSLATE_REDSTONE_ORE = register("dense_deepslate_redstone_ore", () -> new RedStoneOreBlock(BlockBehaviour.Properties.ofFullCopy(DENSE_REDSTONE_ORE.get())));
+    public static final DeferredBlock<Block> DENSE_REDSTONE_ORE = register("dense_redstone_ore", RedStoneOreBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.REDSTONE_ORE));
+    public static final DeferredBlock<Block> DENSE_DEEPSLATE_REDSTONE_ORE = register("dense_deepslate_redstone_ore", RedStoneOreBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_REDSTONE_ORE));
     public static final DeferredBlock<Block> DENSE_EMERALD_ORE = oreBlock("dense_emerald_ore", Blocks.EMERALD_ORE, UniformInt.of(5, 9));
     public static final DeferredBlock<Block> DENSE_DEEPSLATE_EMERALD_ORE = oreBlock("dense_deepslate_emerald_ore", Blocks.DEEPSLATE_EMERALD_ORE, UniformInt.of(5, 9));
     public static final DeferredBlock<Block> DENSE_LAPIS_ORE = oreBlock("dense_lapis_ore", Blocks.LAPIS_ORE, UniformInt.of(4, 7));
@@ -37,14 +37,14 @@ public class DenseBlocks {
 
     public static final DeferredBlock<Block> DENSE_NETHER_GOLD_ORE = oreBlock("dense_nether_gold_ore", Blocks.NETHER_GOLD_ORE, UniformInt.of(2, 3));
     public static final DeferredBlock<Block> DENSE_NETHER_QUARTZ_ORE = oreBlock("dense_nether_quartz_ore", Blocks.NETHER_QUARTZ_ORE, UniformInt.of(4, 7));
-    public static final DeferredBlock<Block> ANCIENT_NETHER_ORE = register("ancient_nether_ore", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.ANCIENT_DEBRIS).strength(15f, 500f)));
+    public static final DeferredBlock<Block> ANCIENT_NETHER_ORE = register("ancient_nether_ore", Block::new, BlockBehaviour.Properties.ofFullCopy(Blocks.ANCIENT_DEBRIS).strength(15f, 500f));
 
-    private static DeferredBlock<Block> oreBlock(String name, Block copy, IntProvider experience) {
-        return register(name, () -> new DropExperienceBlock(experience, BlockBehaviour.Properties.ofFullCopy(copy)));
+    private static DeferredBlock<Block> oreBlock(String name, Block copy, IntProvider xpRange) {
+        return register(name, p -> new DropExperienceBlock(xpRange, p), BlockBehaviour.Properties.ofFullCopy(copy));
     }
 
-    private static <T extends Block> DeferredBlock<T> register(String name, Supplier<T> properties) {
-        DeferredBlock<T> block = BLOCKS.register(name, properties);
+    private static <BLOCK extends Block> DeferredBlock<BLOCK> register(String name, Function<BlockBehaviour.Properties, BLOCK> factory, BlockBehaviour.Properties properties) {
+        DeferredBlock<BLOCK> block = BLOCKS.registerBlock(name, factory, () -> properties);
         ITEMS.registerSimpleBlockItem(name, block);
         return block;
     }

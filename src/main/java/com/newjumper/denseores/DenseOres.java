@@ -28,16 +28,16 @@ public class DenseOres {
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> DENSE_ORES = CREATIVE_MODE_TABS.register("dense_ores", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup." + MOD_ID)).icon(() -> new ItemStack(DenseBlocks.DENSE_DIAMOND_ORE)).build());
 
     public DenseOres(IEventBus eventBus) {
-        CREATIVE_MODE_TABS.register(eventBus);
         DenseBlocks.BLOCKS.register(eventBus);
         DenseBlocks.ITEMS.register(eventBus);
+        CREATIVE_MODE_TABS.register(eventBus);
 
         eventBus.addListener(this::buildCreativeTab);
         eventBus.addListener(this::generateClientData);
     }
 
     public void buildCreativeTab(final BuildCreativeModeTabContentsEvent event) {
-        if(event.getTab() == DENSE_ORES.get()) DenseBlocks.BLOCKS.getEntries().forEach(block -> event.accept(block.getDelegate().value()));
+        if(event.getTab() == DENSE_ORES.get()) DenseBlocks.BLOCKS.getEntries().forEach(block -> event.accept(block.get()));
     }
 
     public void generateClientData(final GatherDataEvent.Client event) {
