@@ -6,7 +6,6 @@
   "group": "redstone",
   "ingredient": "denseores:dense_deepslate_redstone_ore",
   "result": {
-    "count": 1,
     "id": "minecraft:redstone"
   }
 }

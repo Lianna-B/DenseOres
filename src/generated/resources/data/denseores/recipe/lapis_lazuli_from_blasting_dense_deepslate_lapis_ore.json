@@ -6,7 +6,6 @@
   "group": "lapis_lazuli",
   "ingredient": "denseores:dense_deepslate_lapis_ore",
   "result": {
-    "count": 1,
     "id": "minecraft:lapis_lazuli"
   }
 }

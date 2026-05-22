@@ -6,7 +6,6 @@
   "group": "iron_ingot",
   "ingredient": "denseores:dense_deepslate_iron_ore",
   "result": {
-    "count": 1,
     "id": "minecraft:iron_ingot"
   }
 }
