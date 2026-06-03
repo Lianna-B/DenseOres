@@ -1,0 +1,22 @@
+{
+  "block.denseores.ancient_nether_ore": "Antikes Nethererz",
+  "block.denseores.dense_coal_ore": "Reichhaltige Steinkohle",
+  "block.denseores.dense_copper_ore": "Reichhaltiges Kupfererz",
+  "block.denseores.dense_deepslate_coal_ore": "Reichhaltige Tiefenschiefer-Steinkohle",
+  "block.denseores.dense_deepslate_copper_ore": "Reichhaltiges Tiefenschiefer-Kupfererz",
+  "block.denseores.dense_deepslate_diamond_ore": "Reichhaltiges Tiefenschiefer-Diamanterz",
+  "block.denseores.dense_deepslate_emerald_ore": "Reichhaltiges Tiefenschiefer-Smaragderz",
+  "block.denseores.dense_deepslate_gold_ore": "Reichhaltiges Tiefenschiefer-Golderz",
+  "block.denseores.dense_deepslate_iron_ore": "Reichhaltiges Tiefenschiefer-Eisenerz",
+  "block.denseores.dense_deepslate_lapis_ore": "Reichhaltiges Tiefenschiefer-Lapislazulierz",
+  "block.denseores.dense_deepslate_redstone_ore": "Reichhaltiges Tiefenschiefer-Redstone-Erz",
+  "block.denseores.dense_diamond_ore": "Reichhaltiges Diamanterz",
+  "block.denseores.dense_emerald_ore": "Reichhaltiges Smaragderz",
+  "block.denseores.dense_gold_ore": "Reichhaltiges Golderz",
+  "block.denseores.dense_iron_ore": "Reichhaltiges Eisenerz",
+  "block.denseores.dense_lapis_ore": "Reichhaltiges Lapislazulierz",
+  "block.denseores.dense_nether_gold_ore": "Reichhaltiges Nethergolderz",
+  "block.denseores.dense_nether_quartz_ore": "Reichhaltiges Netherquarzerz",
+  "block.denseores.dense_redstone_ore": "Reichhaltiges Redstone-Erz",
+  "itemGroup.denseores": "Reichhaltige Erze (Dense Ores)"
+}
